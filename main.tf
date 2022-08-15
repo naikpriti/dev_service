@@ -12,6 +12,6 @@ resource "azurerm_servicebus_queue" "app1MessagesQueue" {
   for_each            = var.messages_queue_name
   name                = each.key
   #resource_group_name = var.resource_group
-  namespace_id      = each.services_bus_namespace_name
+  namespace_id      = each.value.services_bus_namespace_name
   max_size_in_megabytes = each.value.max_size   
 }

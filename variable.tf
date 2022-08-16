@@ -105,3 +105,36 @@ variable "app_insights" {
   default     = {}
 }
 
+variable "system_topic_name" {
+  description = "action group short name"
+  type        = string
+}
+
+variable "event_delivery_schema" {
+  description = "action group short name"
+  type        = string
+}
+
+variable "advanced_filtering_on_arrays_enabled" {
+  description = "action group short name"
+  type        = string
+}
+
+
+variable "advanced_filter" {
+  description = "action group short name"
+  type        = string
+}
+
+
+variable "business_action_group_short_name" {
+  description = "action group short name"
+  type        = string
+}
+
+
+variable "business_action_group_short_name" {
+  description = "action group short name"
+  type        = string
+}
+

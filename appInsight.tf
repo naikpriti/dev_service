@@ -1,3 +1,6 @@
+
+
+
 locals {
   isaamservice_exceptions         = contains(var.business_alerts, "isaamservice_exceptions") ? var.app_insights : {}
   ordermatchingservice_exceptions = contains(var.business_alerts, "ordermatchingservice_exceptions") ? var.app_insights : {}

@@ -105,14 +105,3 @@ variable "app_insights" {
   default     = {}
 }
 
-variable "frequency" {
-  description = "Number of occurences of the same alert"
-  type        = number
-  default     = 5
-}
-
-variable "time_window_response" {
-  description = "Threshold time (in minutes) for frequency of the same alert"
-  type        = number
-  default     = 5
-}

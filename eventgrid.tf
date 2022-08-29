@@ -5,7 +5,7 @@ resource "azurerm_eventgrid_system_topic" "system_topic" {
   location               = var.location
   source_arm_resource_id = each.value.storage_account_id
   topic_type             = "Microsoft.Storage.StorageAccounts"
-  tags                   = []
+
 
 }
 

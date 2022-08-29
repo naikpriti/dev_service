@@ -59,7 +59,7 @@ variable "subscription_name" {
   default = {}
 }
 
-variable "system_topic" {
+variable "system_topic_name" {
   description = "action group short name"
    type = map(object({
     name = any
@@ -95,7 +95,7 @@ variable "event_subscription" {
   description = "action group short name"
    type = map(object({
     name = any
-    system_topic = any 
+    system_topic_name = any 
     storage_account_id = any
     included_event_types = any 
     service_bus_queue_endpoint_id = any 

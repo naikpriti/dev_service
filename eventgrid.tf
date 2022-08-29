@@ -1,5 +1,5 @@
 resource "azurerm_eventgrid_system_topic" "system_topic" {
-  for_each               = var.system_topic
+  for_each               = var.system_topic_name
   name                   = each.key
   resource_group_name    = var.resource_group
   location               = var.location
@@ -10,7 +10,7 @@ resource "azurerm_eventgrid_system_topic" "system_topic" {
 }
 
 resource "azurerm_eventgrid_system_topic_event_subscription" "event_subscription" {
-  for_each            = var.system_topic_event_subscription
+  for_each            = var.event_subscription
   name                = each.key
   system_topic        = each.value.system_topic_name
   resource_group_name = var.resource_group

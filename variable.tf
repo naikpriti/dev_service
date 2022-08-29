@@ -61,8 +61,13 @@ variable "subscription_name" {
 
 variable "system_topic_name" {
   description = "action group short name"
-  type        = string
+   type = map(object({
+    name = any
+    storage_account_id = any
+  }))
+  default = {}
 }
+
 
 variable "event_delivery_schema" {
   description = "action group short name"
@@ -84,3 +89,21 @@ variable "advanced_filter" {
 
 
 
+
+
+variable "event_subscription" {
+  description = "action group short name"
+   type = map(object({
+    name = any
+    system_topic = any 
+    storage_account_id = any
+    included_event_types = any 
+    service_bus_queue_endpoint_id = any 
+    max_delivery_attempts = any 
+    event_time_to_live = any 
+    key = any 
+    values= any 
+    opertor = any 
+  }))
+  default = {}
+}

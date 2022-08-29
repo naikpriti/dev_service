@@ -36,10 +36,10 @@ variable "max_size_in_megabytes" {
   default     = 1024
 }
 
-variable "subscription_id" {
+/*variable "subscription_id" {
   description = "max_size_in_megabytes"
   type        = any
-}
+}*/
 
 
 variable "names" {
@@ -59,7 +59,7 @@ variable "subscription_name" {
   default = {}
 }
 
-variable "system_topic_name" {
+variable "system_topic" {
   description = "action group short name"
    type = map(object({
     name = any
@@ -82,10 +82,10 @@ variable "advanced_filtering_on_arrays_enabled" {
 }
 
 
-variable "advanced_filter" {
+/*variable "advanced_filter" {
   description = "action group short name"
   type        = string
-}
+}*/
 
 
 

@@ -1,4 +1,4 @@
-
+/*
 
 
 locals {
@@ -78,3 +78,4 @@ resource "azurerm_monitor_smart_detector_alert_rule" "failure_anomalies_cru_nonp
     ids = [azurerm_monitor_action_group.businessalertactiongroup.id]
   }
 }
+*/

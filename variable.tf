@@ -82,28 +82,32 @@ variable "advanced_filtering_on_arrays_enabled" {
 }
 
 
-/*variable "advanced_filter" {
+variable "advanced_filter" {
   description = "action group short name"
+  type        = any
+}
+
+
+variable "source_resource_id" {
+  description = "ID of the Event Grid System Topic ARM Source."
   type        = string
-}*/
-
-
-
+}
 
 
 variable "event_subscription" {
   description = "action group short name"
    type = map(object({
-    name = any
+    /*name = any
     system_topic_name = any 
     storage_account_id = any
     included_event_types = any 
     service_bus_queue_endpoint_id = any 
     max_delivery_attempts = any 
     event_time_to_live = any 
-    key = any 
-    values= any 
-    opertor = any 
+    key = any
+    value= any
+    opertor = any*/
+    
   }))
-  default = {}
+  
 }

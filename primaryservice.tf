@@ -1,4 +1,4 @@
-resource "azurerm_servicebus_namespace" "busNamespace" {
+/*resource "azurerm_servicebus_namespace" "busNamespace" {
   for_each            = var.services_bus_namespace_name
   name                = each.key
   location            = var.location
@@ -15,3 +15,4 @@ resource "azurerm_servicebus_queue" "app1MessagesQueue" {
   namespace_id = each.value.services_bus_namespace_name
   max_size_in_megabytes = var.max_size_in_megabytes   
 }
+*/

@@ -1,24 +1,24 @@
 resource "azurerm_eventgrid_system_topic" "example" {
-  name                   = "test-subtopic"
+  name                   = var.system_topic_name
   resource_group_name    = "test-grp"
   location               = "eastus"
-  source_arm_resource_id = "/subscriptions/cbfacc58-a6b3-4ddf-b84b-7f263275b03b/resourceGroups/test-grp/providers/Microsoft.Storage/storageAccounts/teststoragesub"
+  source_arm_resource_id = var.source_arm_resource_id
   topic_type             = "Microsoft.Storage.StorageAccounts"
 }
 
 
 
 resource "azurerm_eventgrid_system_topic_event_subscription" "subscription" {
-      name                 = "testsub"
-      system_topic         = azurerm_eventgrid_system_topic.example.name
+      name                 = var.event_sub_name
+      system_topic         = var.system_topic_name
       resource_group_name  = "test-grp"
-      event_delivery_schema = "EventGridSchema"
+      event_delivery_schema = var.event_delivery_schema
       advanced_filtering_on_arrays_enabled = true
-      service_bus_queue_endpoint_id = "/subscriptions/cbfacc58-a6b3-4ddf-b84b-7f263275b03b/resourceGroups/test-grp/providers/Microsoft.ServiceBus/namespaces/cru-sub/queues/subqueue"
-      included_event_types =  ["Microsoft.Storage.BlobCreated"]
-      retry_policy {
-         max_delivery_attempts = "3"
-         event_time_to_live = "1000"
+      service_bus_queue_endpoint_id = var.service_bus_queue_endpoint_id
+      included_event_types =  var.included_event_types
+      dynamic "retry_policy" {
+         max_delivery_attempts = var.max_delivery_attempts
+         event_time_to_live = var.event_time_to_live
        }   
       dynamic "advanced_filter" {
         for_each = length(try(var.advanced_filter[0], [])) != 0 ? [var.advanced_filter] : []

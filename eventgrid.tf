@@ -1,54 +1,52 @@
-resource "azurerm_eventgrid_system_topic" "eventgrid_system_topic" {
-  name                = var.system_topic_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  source_arm_resource_id = var.source_resource_id
-  topic_type             = var.topic_type
-
-  identity {
-    type = "SystemAssigned"
-  }
-
- 
+resource "azurerm_eventgrid_system_topic" "example" {
+  name                   = "test-subtopic"
+  resource_group_name    = "test-grp"
+  location               = "eastus"
+  source_arm_resource_id = "/subscriptions/cbfacc58-a6b3-4ddf-b84b-7f263275b03b/resourceGroups/test-grp/providers/Microsoft.Storage/storageAccounts/teststoragesub"
+  topic_type             = "Microsoft.Storage.StorageAccounts"
 }
 
 
-resource "azurerm_eventgrid_system_topic_event_subscription" "event_subscription" {
-  name                = var.event_subscription_name
-  system_topic        = var.system_topic_name
-  resource_group_name = var.resource_group_name
-  event_delivery_schema = var.event_delivery_schema
-  service_bus_queue_endpoint_id = try(var.service_bus_queue_endpoint_id, "")
-  advanced_filtering_on_arrays_enabled = var.advanced_filtering_on_arrays_enabled
-  included_event_types = var.included_event_types
 
-  dynamic "advanced_filter" {
-    for_each = var.advanced_filter != null ? ["advanced_filter"] : []
-    content {
-      dynamic "string_ends_with" {
-        for_each = lookup(var.advanced_filter, "string_ends_with", {}) != {} ? ["string_ends_with"] : []
+resource "azurerm_eventgrid_system_topic_event_subscription" "subscription" {
+      name                 = "testsub"
+      system_topic         = azurerm_eventgrid_system_topic.example.name
+      resource_group_name  = "test-grp"
+      event_delivery_schema = "EventGridSchema"
+      advanced_filtering_on_arrays_enabled = true
+      service_bus_queue_endpoint_id = "/subscriptions/cbfacc58-a6b3-4ddf-b84b-7f263275b03b/resourceGroups/test-grp/providers/Microsoft.ServiceBus/namespaces/cru-sub/queues/subqueue"
+      included_event_types =  ["Microsoft.Storage.BlobCreated"]
+      retry_policy {
+         max_delivery_attempts = "3"
+         event_time_to_live = "1000"
+       }   
+      dynamic "advanced_filter" {
+        for_each = length(try(var.advanced_filter[0], [])) != 0 ? [var.advanced_filter] : []
         content {
-          key    = lookup(var.advanced_filter, "string_ends_with.key", null)
-          values = lookup(var.advanced_filter, "string_ends_with.values", null)
-        }
-      }
-      dynamic "string_contains" {
-        for_each = lookup(var.advanced_filter, "string_contains", {}) != {} ? ["string_contains"] : []
-        content {
-          key    = lookup(var.advanced_filter, "string_contains.key", null)
-          values = lookup(var.advanced_filter, "string_contains.values", null)
-        }
-      }
-    }
-  }
+          dynamic "string_contains" {
+            for_each = [for filter in advanced_filter.value : [filter.string_contains] if try(filter.string_contains, null) != null]
+            content {
+              key   = string_contains.value[0].key
+              values = string_contains.value[0].values
+            }
+          }
+    
+          dynamic "number_greater_than" {
+            for_each = [for filter in advanced_filter.value : [filter.number_greater_than] if try(filter.number_greater_than, null) != null]
+            content {
+              key   = number_greater_than.value[0].key
+              value = number_greater_than.value[0].value
+            }
+          }
+    
+          dynamic "number_greater_than_or_equals" {
+            for_each = [for filter in advanced_filter.value : [filter.number_greater_than_or_equals] if try(filter.number_greater_than_or_equals, null) != null]
+            content {
+              key   = number_greater_than_or_equals.value[0].key
+              value = number_greater_than_or_equals.value[0].value
+            }
+          }
 
-  dynamic "retry_policy" {
-    for_each = var.retry_policy
-     content {
-      max_delivery_attempts = lookup(var.retry_policy, "max_delivery_attempts", null)
-      event_time_to_live    = lookup(var.retry_policy, "event_time_to_live", null)
-   }
-  }
-
-  
+}
+}
 }
